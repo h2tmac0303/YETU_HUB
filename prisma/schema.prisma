@@ -1,0 +1,211 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+//////////////////////////
+// ENUMS
+//////////////////////////
+
+enum Role {
+  ENTREPRENEUR
+  INVESTOR
+  PARTNER
+  ADMIN
+}
+
+enum InvestmentStage {
+  IDEA
+  MVP
+  TRACTION
+  SCALE
+}
+
+enum ConnectionStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum NeedType {
+  CAPITAL
+  MENTORING
+  SERVICES
+}
+
+//////////////////////////
+// USER BASE
+//////////////////////////
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  entrepreneur EntrepreneurProfile?
+  investor     InvestorProfile?
+  partner      PartnerProfile?
+
+  sentConnections     Connection[]   @relation("SentConnections")
+  receivedConnections Connection[]   @relation("ReceivedConnections")
+  subscriptions       Subscription[]
+}
+
+//////////////////////////
+// ENTREPRENEUR
+//////////////////////////
+
+model EntrepreneurProfile {
+  id             String          @id @default(uuid())
+  userId         String          @unique
+  companyName    String
+  sector         String
+  pitchDeckUrl   String?
+  videoUrl       String?
+  description    String
+  stage          InvestmentStage
+  monthlyRevenue Float?
+  capitalNeeded  Float?
+  isVerified     Boolean         @default(false)
+
+  needs   Need[]
+  reports MonthlyReport[]
+  matches Match[]
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+//////////////////////////
+// INVESTOR
+//////////////////////////
+
+model InvestorProfile {
+  id             String           @id @default(uuid())
+  userId         String           @unique
+  ticketMin      Float
+  ticketMax      Float
+  sectors        String[]
+  preferredStage InvestmentStage?
+
+  matches Match[]
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+//////////////////////////
+// PARTNER
+//////////////////////////
+
+model PartnerProfile {
+  id          String @id @default(uuid())
+  userId      String @unique
+  companyName String
+  serviceType String
+  description String
+
+  benefits Benefit[]
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+//////////////////////////
+// NEEDS (Entrepreneur)
+//////////////////////////
+
+model Need {
+  id             String   @id @default(uuid())
+  type           NeedType
+  entrepreneurId String
+
+  entrepreneur EntrepreneurProfile @relation(fields: [entrepreneurId], references: [id])
+}
+
+//////////////////////////
+// MATCH SYSTEM
+//////////////////////////
+
+model Match {
+  id             String   @id @default(uuid())
+  entrepreneurId String
+  investorId     String?
+  partnerId      String?
+  compatibility  Float
+  createdAt      DateTime @default(now())
+
+  entrepreneur EntrepreneurProfile @relation(fields: [entrepreneurId], references: [id])
+  investor     InvestorProfile?    @relation(fields: [investorId], references: [id])
+}
+
+//////////////////////////
+// CONNECTION SYSTEM
+//////////////////////////
+
+model Connection {
+  id         String           @id @default(uuid())
+  senderId   String
+  receiverId String
+  status     ConnectionStatus @default(PENDING)
+  createdAt  DateTime         @default(now())
+
+  sender   User @relation("SentConnections", fields: [senderId], references: [id])
+  receiver User @relation("ReceivedConnections", fields: [receiverId], references: [id])
+}
+
+//////////////////////////
+// MONTHLY REPORT
+//////////////////////////
+
+model MonthlyReport {
+  id             String   @id @default(uuid())
+  entrepreneurId String
+  revenue        Float?
+  expenses       Float?
+  highlights     String
+  challenges     String
+  createdAt      DateTime @default(now())
+
+  entrepreneur EntrepreneurProfile @relation(fields: [entrepreneurId], references: [id])
+}
+
+//////////////////////////
+// BENEFITS (Clube)
+//////////////////////////
+
+model Benefit {
+  id          String  @id @default(uuid())
+  partnerId   String
+  title       String
+  description String
+  active      Boolean @default(true)
+
+  partner PartnerProfile @relation(fields: [partnerId], references: [id])
+}
+
+//////////////////////////
+// SUBSCRIPTION
+//////////////////////////
+
+model Subscription {
+  id        String    @id @default(uuid())
+  userId    String
+  plan      String
+  active    Boolean   @default(true)
+  startedAt DateTime  @default(now())
+  expiresAt DateTime?
+
+  user User @relation(fields: [userId], references: [id])
+} 
