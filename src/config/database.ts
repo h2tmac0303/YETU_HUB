@@ -1,17 +1,30 @@
-import { PrismaClient } from "../generated/prisma";
+import { Pool } from 'pg';
+import { PrismaPg } from '@prisma/adapter-pg';
+import { PrismaClient } from '@prisma/client';
 
-const globalForPrisma = global as unknown as {
-  prisma: PrismaClient | undefined;
+// 1. Definição do Singleton para evitar múltiplas instâncias em Dev
+const globalForPrisma = global as unknown as { prisma: PrismaClient };
+
+const setupPrisma = () => {
+  const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  throw new Error("🚨 DATABASE_URL não encontrada no arquivo .env");
+}
+  
+  // Criamos o Pool do Postgres
+  const pool = new Pool({ connectionString });
+  
+  // Criamos o Adaptador exigido pelo motor "client" do Prisma 7
+  const adapter = new PrismaPg(pool);
+
+  return new PrismaClient({ 
+    adapter,
+    log: process.env.NODE_ENV === "development" ? ["query", "error"] : ["error"],
+  });
 };
 
-export const prisma =
-  globalForPrisma.prisma ??
-  new PrismaClient({
-    log: ["error", "warn"],
-  });
+// 2. Exportação ÚNICA da constante prisma
+export const prisma = globalForPrisma.prisma || setupPrisma();
 
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
-}
-
-export default prisma;
+if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;

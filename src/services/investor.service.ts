@@ -1,4 +1,4 @@
-import prisma from "../config/database.js";
+import {prisma} from "../config/database.js";
 
 interface CreateInvestorDTO {
   userId: string;
@@ -19,13 +19,13 @@ class InvestorService {
   // 🧠 Criar perfil de investidor
   async create(data: CreateInvestorDTO) {
     return prisma.investorProfile.create({
-      data: {
-        userId: data.userId,
-        ticketMin: data.ticketMin,
-        ticketMax: data.ticketMax,
-        sectors: data.sectors,
-        preferredStage: data.preferredStage,
-      },
+    data: {
+  userId: data.userId,
+  ticketMin: data.ticketMin,
+  ticketMax: data.ticketMax,
+  sectors: data.sectors,
+  preferredStage: data.preferredStage ?? null,
+},
     });
   }
 

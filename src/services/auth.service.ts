@@ -1,6 +1,6 @@
-import prisma from "../config/database.js";
+import {prisma} from "../config/database.js";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import jwt, { type Secret, type SignOptions } from "jsonwebtoken";
 import { env } from "../config/env.js";
 
 class AuthService {
@@ -61,16 +61,18 @@ class AuthService {
       throw new Error("Invalid credentials");
     }
 
+    const payload = {
+      id: user.id,
+      email: user.email,
+      role: user.role
+    };
+
     const token = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-      },
-      env.JWT_SECRET,
+      payload,
+      env.JWT_SECRET as Secret,
       {
         expiresIn: env.JWT_EXPIRES_IN,
-      }
+      } as SignOptions
     );
 
     return {

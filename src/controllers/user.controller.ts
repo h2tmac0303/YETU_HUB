@@ -21,7 +21,16 @@ export class UserController {
 
   async findById(req: Request, res: Response) {
     try {
-      const user = await userService.findById(req.params.id);
+      const id = req.params.id;
+
+      if (!id || Array.isArray(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid ID",
+        });
+      }
+
+      const user = await userService.findById(id);
       return res.json(user);
     } catch (error: any) {
       return res.status(404).json({
@@ -33,7 +42,16 @@ export class UserController {
 
   async update(req: Request, res: Response) {
     try {
-      const user = await userService.update(req.params.id, req.body);
+      const id = req.params.id;
+
+      if (!id || Array.isArray(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid ID",
+        });
+      }
+
+      const user = await userService.update(id, req.body);
       return res.json(user);
     } catch (error: any) {
       return res.status(400).json({
@@ -45,7 +63,16 @@ export class UserController {
 
   async delete(req: Request, res: Response) {
     try {
-      await userService.delete(req.params.id);
+      const id = req.params.id;
+
+      if (!id || Array.isArray(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid ID",
+        });
+      }
+
+      await userService.delete(id);
       return res.json({
         success: true,
         message: "User deleted",

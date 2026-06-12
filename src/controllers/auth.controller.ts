@@ -25,6 +25,13 @@ export class AuthController {
       });
     }
   }
+
+  async logout(req: Request, res: Response) {
+  return res.status(200).json({
+    success: true,
+    message: "Logout successful"
+  });
+}
 }
 
 export const authController = new AuthController();
