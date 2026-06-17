@@ -1,0 +1,8 @@
+import type { Request, Response, NextFunction } from "express";
+
+export const errorMiddleware = (err: any, req: Request, res: Response, next: NextFunction) => {
+  console.error(err); // Logger útil para debug
+  return res.status(err.status || 500).json({
+    message: err.message || "Erro interno do servidor.",
+  });
+};
