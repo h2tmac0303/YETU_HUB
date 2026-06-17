@@ -1,37 +1,71 @@
-import type { Request, Response } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { authService } from "../services/auth.service.js";
 
-export class AuthController {
-  async register(req: Request, res: Response) {
+export const AuthController = {
+  // =========================
+  // REGISTER CONTROLLER
+  // =========================
+  async register(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = await authService.register(req.body);
+      const { name, email, password, role } = req.body;
 
-      return res.status(201).json(user);
-    } catch (error: any) {
-      return res.status(400).json({
-        message: error.message,
+      // Validação básica
+      if (!name || !email || !password || !role) {
+        return res.status(400).json({ message: "Todos os campos são obrigatórios." });
+      }
+
+      const user = await authService.register({ name, email, password, role });
+      
+      return res.status(201).json({
+        message: "Usuário registrado com sucesso.",
+        user
       });
+    } catch (error: any) {
+      if (error.message === "User already exists") {
+        return res.status(409).json({ message: error.message });
+      }
+      next(error);
     }
-  }
+  },
 
-  async login(req: Request, res: Response) {
+  // =========================
+  // LOGIN CONTROLLER
+  // =========================
+  async login(req: Request, res: Response, next: NextFunction) {
     try {
-      const result = await authService.login(req.body);
+      const { email, password } = req.body;
 
-      return res.status(200).json(result);
-    } catch (error: any) {
-      return res.status(401).json({
-        message: error.message,
+      if (!email || !password) {
+        return res.status(400).json({ message: "Email e senha são obrigatórios." });
+      }
+
+      const result = await authService.login({ email, password });
+
+      return res.status(200).json({
+        message: "Login realizado com sucesso.",
+        ...result
       });
+    } catch (error: any) {
+      if (error.message === "Invalid credentials") {
+        return res.status(401).json({ message: error.message });
+      }
+      next(error);
     }
-  }
+  },
 
+  // =========================
+  // LOGOUT
+  // =========================
   async logout(req: Request, res: Response) {
-  return res.status(200).json({
-    success: true,
-    message: "Logout successful"
-  });
-}
-}
+    // Se você estiver usando cookies HTTP-only para o JWT:
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+    });
 
-export const authController = new AuthController();
+    return res.status(200).json({ 
+      message: "Logout realizado com sucesso." 
+    });
+  }
+};

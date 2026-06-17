@@ -1,141 +1,71 @@
+# 🚀 YETO HUB
 
-Conceito Central: O "Hub de Crescimento Colaborativo"
-A plataforma atua como uma ponte de três vias. O objetivo não é apenas listar empresas, mas criar "matches" inteligentes baseados em necessidades e capacidades.
-Para o Pequeno Negócio: Acesso a capital, mentoria e ferramentas.
-Para o Investidor: Acesso a negócios validados e com suporte (menor risco).
-Para Parceiros/Patrocinadores: Visibilidade de marca e acesso a um mercado B2B segmentado.
-
-1. Estrutura dos Perfis (Os 3 Pilares)
-A. O Empreendedor (Pequeno Negócio)
-Perfil de "Vitrine": Pitch deck, vídeo de apresentação, métricas atuais e o que precisam (capital vs. mentoria vs. serviços).
-Painel de Crescimento: Onde eles gerenciam as conexões e acessam os benefícios oferecidos pelos patrocinadores (ex: descontos em software, consultoria jurídica gratuita).
-B. O Investidor (Anjo, VC ou Sócio)
-Filtros de Tese: Define o tipo de negócio que busca (ex: Tecnologia, Agronegócio, Varejo).
-Data Room Simplificado: Acesso a documentos padronizados dos negócios para due diligence rápida.
-C. O Parceiro/Patrocinador (Corporates e Serviços)
-Parceiro de Serviço: Empresas que oferecem serviços B2B (contabilidade, marketing, jurídico) em troca de visibilidade ou participação.
-Patrocinador Institucional: Grandes marcas que querem apoiar o ecossistema (ex: um banco oferecendo taxas menores ou uma empresa de tecnologia oferecendo créditos de nuvem).
-
-2. Funcionalidades Chave por Módulo
-Módulo de "Matchmaking" (O Coração do Sistema)
-Algoritmo de Compatibilidade: Se um negócio precisa de R$ 50k e marketing, a plataforma sugere um Investidor que investe esse ticket é um Parceiro de Marketing.
-Conexão "Smart": O investidor recebe um alerta: "Novo negócio compatível com sua tese entrou na plataforma."
-Módulo de Apoio e Educação (Retenção)
-Trilhas de Capacitação: Cursos curtos ou checklists obrigatórios para o negócio ganhar um selo de "Verificado" (aumentando a confiança do investidor).
-Clube de Benefícios: Uma área onde os Patrocinadores disponibilizam ofertas (ex: "3 meses grátis de CRM para empresas da plataforma").
-Módulo de Governança (Transparência)
-Report Automatizado: Ferramenta para o pequeno negócio enviar atualizações mensais simplificadas para seus investidores e parceiros (receita, desafios, conquistas).
-
-3. Estratégia de Monetização (Sustentabilidade)
-Para manter a plataforma, você pode explorar modelos híbridos:
-Fonte de Receita
-Descrição
-Taxa de Sucesso (Take Rate)
-% sobre o investimento captado através da plataforma.
-Assinatura Premium (SaaS)
-Ferramentas avançadas para empresas (ex: gerador de contrato, análise financeira).
-Cotas de Patrocínio
-Grandes empresas pagam para ter sua marca exibida como "Apoiadora Oficial" e ter acesso à base de dados.
-Lead Generation
-Parceiros de serviço pagam por leads qualificados (ex: contadores pagam para contatar novos negócios).
-
-
-4. Diferencial Competitivo: "Risco Reduzido"
-O grande trunfo dessa fusão é vender segurança para o investidor.
-Narrativa: "Não invista apenas em uma ideia. Invista em um negócio que está numa plataforma que oferece suporte, ferramentas e parceiros para garantir que ele dê certo."
-5. Sugestão de Stack Tecnológico Inicial
-Para um MVP (Produto Viável Mínimo) robusto e escalável:
-Frontend: Next.js (React) com Tailwind CSS para uma UI rápida e responsiva.
-Backend: Node.js (para autenticação e banco de dados em tempo real).
-Pagamentos: Integração com Stripe ou Pagar.me para gerir assinaturas ou transações (SUGESTÃO)
-
-# YETO HUB
+O **YETO HUB** é uma plataforma de "crescimento colaborativo" que atua como uma ponte de três vias entre Empreendedores, Investidores e Parceiros estratégicos. Nosso objetivo não é apenas listar empresas, mas criar "matches" inteligentes baseados em necessidades e capacidades reais.
 
 
 
-src/
-│
-├── app.ts
-├── server.ts
-├── config/
-│   ├── env.ts
-│   ├── database.ts
-│   └── cors.ts
-│
-├── routes/
-│   ├── index.ts
-│   ├── auth.routes.ts
-│   ├── user.routes.ts
-│   ├── entrepreneur.routes.ts
-│   ├── investor.routes.ts
-│   ├── partner.routes.ts
-│   ├── match.routes.ts
-│   ├── connection.routes.ts
-│   └── report.routes.ts
-│
-├── controllers/
-│   ├── auth.controller.ts
-│   ├── user.controller.ts
-│   ├── entrepreneur.controller.ts
-│   ├── investor.controller.ts
-│   ├── partner.controller.ts
-│   ├── match.controller.ts
-│   ├── connection.controller.ts
-│   └── report.controller.ts
-│
-├── services/
-│   ├── auth.service.ts
-│   ├── user.service.ts
-│   ├── entrepreneur.service.ts
-│   ├── investor.service.ts
-│   ├── partner.service.ts
-│   ├── match.service.ts
-│   ├── connection.service.ts
-│   ├── report.service.ts
-│   └── email.service.ts
-│
-├── repositories/
-│   ├── user.repository.ts
-│   ├── entrepreneur.repository.ts
-│   ├── investor.repository.ts
-│   ├── partner.repository.ts
-│   ├── match.repository.ts
-│   ├── connection.repository.ts
-│   └── report.repository.ts
-│
-├── prisma/
-│   ├── client.ts
-│   └── seed.ts
-│
-├── middlewares/
-│   ├── auth.middleware.ts
-│   ├── error.middleware.ts
-│   ├── role.middleware.ts
-│   └── validate.middleware.ts
-│
-├── utils/
-│   ├── logger.ts
-│   ├── hash.ts
-│   ├── token.ts
-│   ├── response.ts
-│   └── matcher.ts
-│
-├── validators/
-│   ├── auth.validator.ts
-│   ├── user.validator.ts
-│   ├── entrepreneur.validator.ts
-│   ├── investor.validator.ts
-│   └── partner.validator.ts
-│
-├── types/
-│   ├── express.d.ts
-│   ├── user.types.ts
-│   └── global.types.ts
-│
-└── modules/
-    ├── auth/
-    ├── user/
-    ├── entrepreneur/
-    ├── investor/
-    ├── partner/
-    └── match/
+---
+
+## 🎯 A Proposta de Valor
+* **Para o Empreendedor:** Acesso a capital, mentoria e ferramentas essenciais de gestão.
+* **Para o Investidor:** Acesso a negócios validados e com suporte, reduzindo o risco do investimento (Due Diligence simplificada).
+* **Para Parceiros/Patrocinadores:** Visibilidade de marca e acesso a um mercado B2B segmentado.
+
+## 🏗️ Arquitetura do Projeto
+O sistema foi construído com foco em escalabilidade e manutenção, utilizando uma arquitetura modular inspirada em DDD (Domain-Driven Design).
+
+
+
+---
+
+## 🛠️ Stack Tecnológico
+* **Runtime:** Node.js (v22+)
+* **Linguagem:** TypeScript
+* **ORM:** Prisma (com `@prisma/adapter-pg`)
+* **Validação:** Zod (Ambiente e DTOs)
+* **Segurança:** JWT, Bcrypt
+* **Banco de Dados:** PostgreSQL
+
+---
+
+## 🚀 Como Rodar o Projeto
+
+### 1. Pré-requisitos
+* Node.js v22+
+* PostgreSQL
+* `npm` ou `pnpm`
+
+### 2. Instalação
+```bash
+# Clone o repositório
+git clone <url-do-seu-repositorio>
+
+# Instale as dependências
+npm install
+
+# Gere o cliente Prisma
+npx prisma generate
+
+3. Variáveis de AmbienteCrie um arquivo .env na raiz seguindo o modelo:Fragmento do códigoDATABASE_URL="postgresql://user:password@localhost:5432/yeto_hub"
+JWT_SECRET="sua_chave_secreta_min_16_caracteres"
+JWT_EXPIRES_IN="7d"
+NODE_ENV="development"
+PORT=3000
+4. ExecuçãoBash# Rodar em modo de desenvolvimento
+npm run dev
+
+# Compilar para produção
+npm run build
+
+# Rodar a build
+node dist/server.js
+
+🛣️ Endpoints da API
+Módulo | Método | Endpoint | Descrição | 
+Auth | POST | /auth/register | Cria uma nova conta
+        POST | /auth/login  | Autenticação e obtenção do JWT
+Users | GET  | /users   | Lista todos os usuários
+      | GET  | /users/:id | Detalha usuário por ID
+      | PATCH| /users/:id | Atualiza dados do usuário
+      | DELETE| /users/:id | Remove um usuário
+EntrepreneurPOST/entrepreneursCria perfil de empreendedorGET/entrepreneursLista todos os empreendedoresPATCH/entrepreneurs/:idAtualiza perfilInvestorPOST/investorsCria perfil de investidorGET/investorsLista todos os investidoresPATCH/investors/:idAtualiza tese/perfilPartnerPOST/partnersCria perfil de parceiroGET/partners/:id/benefitsLista benefícios do parceiroPOST/partners/:id/benefitsCria um novo benefícioMatchPOST/matches/generateCria novo match entre perfisGET/matchesLista todos os matchesConnectionPOST/connectionsSolicita uma conexãoPATCH/connections/:idAtualiza status (Aceitar/Rejeitar)ReportsPOST/reportsCria relatório mensalGET/reports/:idDetalha relatório de performance🤝 Como ContribuirFaça um fork do projeto.Crie uma branch para sua funcionalidade: git checkout -b feat/nome-da-feature.Siga o padrão de Conventional Commits (ex: feat:, fix:, chore:).Submeta um pull request.Desenvolvido para transformar o ecossistema de pequenos negócios.

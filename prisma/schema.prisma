@@ -144,6 +144,7 @@ model Match {
   partnerId      String?
   compatibility  Float
   createdAt      DateTime @default(now())
+  status         ConnectionStatus @default(PENDING)
 
   entrepreneur EntrepreneurProfile @relation(fields: [entrepreneurId], references: [id])
   investor     InvestorProfile?    @relation(fields: [investorId], references: [id])
@@ -159,6 +160,7 @@ model Connection {
   receiverId String
   status     ConnectionStatus @default(PENDING)
   createdAt  DateTime         @default(now())
+  message   String?
 
   sender   User @relation("SentConnections", fields: [senderId], references: [id])
   receiver User @relation("ReceivedConnections", fields: [receiverId], references: [id])

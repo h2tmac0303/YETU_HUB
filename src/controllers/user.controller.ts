@@ -1,89 +1,39 @@
-import type { Request, Response } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { userService } from "../services/user.service.js";
 
-export class UserController {
-  async create(req: Request, res: Response) {
+export const userController = {
+  async findAll(req: Request, res: Response, next: NextFunction) {
     try {
-      const user = await userService.create(req.body);
-      return res.status(201).json(user);
-    } catch (error: any) {
-      return res.status(400).json({
-        success: false,
-        message: error.message,
-      });
-    }
-  }
+      const users = await userService.findAll();
+      return res.status(200).json(users);
+    } catch (error) { next(error); }
+  },
 
-  async findAll(req: Request, res: Response) {
-    const users = await userService.findAll();
-    return res.json(users);
-  }
-
-  async findById(req: Request, res: Response) {
+  async findById(req: Request, res: Response, next: NextFunction) {
     try {
-      const id = req.params.id;
-
-      if (!id || Array.isArray(id)) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid ID",
-        });
-      }
+      const { id } = req.params as unknown as { id: string };
 
       const user = await userService.findById(id);
-      return res.json(user);
-    } catch (error: any) {
-      return res.status(404).json({
-        success: false,
-        message: error.message,
-      });
-    }
-  }
+      if (!user) return res.status(404).json({ message: "Usuário não encontrado" });
+      return res.status(200).json(user);
+    } catch (error) { next(error); }
+  },
 
-  async update(req: Request, res: Response) {
+  async update(req: Request, res: Response, next: NextFunction) {
     try {
-      const id = req.params.id;
+      const { id } = req.params as unknown as { id: string };
 
-      if (!id || Array.isArray(id)) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid ID",
-        });
-      }
+      const updated = await userService.update(id, req.body);
+      return res.status(200).json(updated);
+    } catch (error) { next(error); }
+  },
 
-      const user = await userService.update(id, req.body);
-      return res.json(user);
-    } catch (error: any) {
-      return res.status(400).json({
-        success: false,
-        message: error.message,
-      });
-    }
-  }
-
-  async delete(req: Request, res: Response) {
+  async delete(req: Request, res: Response, next: NextFunction) {
     try {
-      const id = req.params.id;
-
-      if (!id || Array.isArray(id)) {
-        return res.status(400).json({
-          success: false,
-          message: "Invalid ID",
-        });
-      }
+      const { id } = req.params as unknown as { id: string };
 
       await userService.delete(id);
-      return res.json({
-        success: true,
-        message: "User deleted",
-      });
-    } catch (error: any) {
-      return res.status(400).json({
-        success: false,
-        message: error.message,
-      });
-    }
+      return res.status(204).send();
+    } catch (error) { next(error); }
   }
-}
-
-export const userController = new UserController();
+};
