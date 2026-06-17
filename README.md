@@ -52,66 +52,90 @@ Pagamentos: Integração com Stripe ou Pagar.me para gerir assinaturas ou transa
 # YETO HUB
 
 
+
 src/
+│
+├── app.ts
+├── server.ts
 ├── config/
 │   ├── env.ts
 │   ├── database.ts
-│   ├── cors.ts
-│   └── logger.ts
-
+│   └── cors.ts
+│
+├── routes/
+│   ├── index.ts
+│   ├── auth.routes.ts
+│   ├── user.routes.ts
+│   ├── entrepreneur.routes.ts
+│   ├── investor.routes.ts
+│   ├── partner.routes.ts
+│   ├── match.routes.ts
+│   ├── connection.routes.ts
+│   └── report.routes.ts
+│
+├── controllers/
+│   ├── auth.controller.ts
+│   ├── user.controller.ts
+│   ├── entrepreneur.controller.ts
+│   ├── investor.controller.ts
+│   ├── partner.controller.ts
+│   ├── match.controller.ts
+│   ├── connection.controller.ts
+│   └── report.controller.ts
+│
+├── services/
+│   ├── auth.service.ts
+│   ├── user.service.ts
+│   ├── entrepreneur.service.ts
+│   ├── investor.service.ts
+│   ├── partner.service.ts
+│   ├── match.service.ts
+│   ├── connection.service.ts
+│   ├── report.service.ts
+│   └── email.service.ts
+│
+├── repositories/
+│   ├── user.repository.ts
+│   ├── entrepreneur.repository.ts
+│   ├── investor.repository.ts
+│   ├── partner.repository.ts
+│   ├── match.repository.ts
+│   ├── connection.repository.ts
+│   └── report.repository.ts
+│
 ├── prisma/
-│   └── schema.prisma
-
-├── modules/
-│   ├── auth/
-│   │   ├── auth.controller.ts
-│   │   ├── auth.service.ts
-│   │   ├── auth.routes.ts
-│   │   └── auth.middleware.ts
-│   │
-│   ├── users/
-│   │   ├── user.controller.ts
-│   │   ├── user.service.ts
-│   │   ├── user.routes.ts
-│   │   └── user.types.ts
-│   │
-│   ├── entrepreneur/
-│   │   ├── entrepreneur.controller.ts
-│   │   ├── entrepreneur.service.ts
-│   │   └── entrepreneur.routes.ts
-│   │
-│   ├── investor/
-│   │   ├── investor.controller.ts
-│   │   ├── investor.service.ts
-│   │   └── investor.routes.ts
-│   │
-│   ├── partner/
-│   │   ├── partner.controller.ts
-│   │   ├── partner.service.ts
-│   │   └── partner.routes.ts
-│   │
-│   ├── match/
-│   │   ├── match.engine.ts
-│   │   ├── match.service.ts
-│   │   └── match.routes.ts
-│   │
-│   └── reports/
-│       ├── report.service.ts
-│       └── report.routes.ts
-
-├── shared/
-│   ├── errors/
-│   ├── utils/
-│   ├── constants/
-│   └── types/
-
+│   ├── client.ts
+│   └── seed.ts
+│
 ├── middlewares/
 │   ├── auth.middleware.ts
+│   ├── error.middleware.ts
 │   ├── role.middleware.ts
-│   └── error.middleware.ts
-
-├── routes/
-│   └── index.ts
-
-├── server.ts
-└── app.ts
+│   └── validate.middleware.ts
+│
+├── utils/
+│   ├── logger.ts
+│   ├── hash.ts
+│   ├── token.ts
+│   ├── response.ts
+│   └── matcher.ts
+│
+├── validators/
+│   ├── auth.validator.ts
+│   ├── user.validator.ts
+│   ├── entrepreneur.validator.ts
+│   ├── investor.validator.ts
+│   └── partner.validator.ts
+│
+├── types/
+│   ├── express.d.ts
+│   ├── user.types.ts
+│   └── global.types.ts
+│
+└── modules/
+    ├── auth/
+    ├── user/
+    ├── entrepreneur/
+    ├── investor/
+    ├── partner/
+    └── match/

@@ -1,24 +1,27 @@
+import { z } from "zod";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
-dotenv.config();
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-export const env = {
-  NODE_ENV: process.env.NODE_ENV || "development",
-  PORT: process.env.PORT || 3000,
+// Força o dotenv a procurar o arquivo .env na raiz do projeto
 
-  DATABASE_URL: process.env.DATABASE_URL as string,
+dotenv.config({ path: path.resolve(__dirname, "../../.env") });
 
-  JWT_SECRET: process.env.JWT_SECRET as string,
-  JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN || "7d",
+const envSchema = z.object({
+  NODE_ENV: z.enum(["development", "production"]).default("development"),
+  PORT: z.string().default("3000"),
+  DATABASE_URL: z.string().url(),
+  JWT_SECRET: z.string().min(16),
+  // Adicione a linha faltante aqui para resolver o erro no AuthService:
+  JWT_EXPIRES_IN: z.string().default("7d"), 
+  CORS_ORIGIN: z.string().default("*"),
+});
 
-  CORS_ORIGIN: process.env.CORS_ORIGIN || "*"
-};
+// O Zod faz o parse e valida em tempo de execução
+export const env = envSchema.parse(process.env);
 
-// Validação simples (evita crash silencioso)
-if (!env.DATABASE_URL) {
-  throw new Error("❌ DATABASE_URL não definida no .env");
-}
-
-if (!env.JWT_SECRET) {
-  throw new Error("❌ JWT_SECRET não definida no .env");
-}
+// Isso permite que o restante do app saiba exatamente quais os tipos
+export type Env = z.infer<typeof envSchema>;

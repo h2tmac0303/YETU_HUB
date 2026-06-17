@@ -159,6 +159,7 @@ model Connection {
   receiverId String
   status     ConnectionStatus @default(PENDING)
   createdAt  DateTime         @default(now())
+  message   String?
 
   sender   User @relation("SentConnections", fields: [senderId], references: [id])
   receiver User @relation("ReceivedConnections", fields: [receiverId], references: [id])
