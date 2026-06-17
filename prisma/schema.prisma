@@ -144,6 +144,7 @@ model Match {
   partnerId      String?
   compatibility  Float
   createdAt      DateTime @default(now())
+  status         ConnectionStatus @default(PENDING)
 
   entrepreneur EntrepreneurProfile @relation(fields: [entrepreneurId], references: [id])
   investor     InvestorProfile?    @relation(fields: [investorId], references: [id])
