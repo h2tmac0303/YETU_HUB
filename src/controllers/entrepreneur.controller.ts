@@ -23,13 +23,13 @@ export const entrepreneurController = {
 
   async findById(req: Request, res: Response, next: NextFunction) {
     try {
-      const { id } = req.params as unknown as { id: string };
+      const userId = (req as any).user.id;
       
       // Validação necessária para satisfazer o TypeScript
-      if (!id) {
+      if (!userId) {
         return res.status(400).json({ message: "ID do perfil não fornecido" });
       }
-      const profile = await entrepreneurService.findById(id);
+      const profile = await entrepreneurService.findById(userId);
       if (!profile) return res.status(404).json({ message: "Perfil não encontrado" });
       return res.status(200).json(profile);
     } catch (error) {

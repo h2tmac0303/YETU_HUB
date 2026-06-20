@@ -1,4 +1,4 @@
-import {prisma} from "../config/database.js";
+import { prisma } from "../config/database.js";
 import bcrypt from "bcryptjs";
 import jwt, { type Secret, type SignOptions } from "jsonwebtoken";
 import { env } from "../config/env.js";
@@ -13,6 +13,20 @@ class AuthService {
     password: string;
     role: "ENTREPRENEUR" | "INVESTOR" | "PARTNER";
   }) {
+
+    const roleMapping: Record<string, any> = {
+      'EMPREENDEDOR': 'ENTREPRENEUR',
+      'INVESTIDOR': 'INVESTOR',
+      'PARCEIRO': 'PARTNER'
+    };
+
+    const prismaRole = roleMapping[data.role];
+
+    if (!prismaRole) {
+      throw new Error(`Role inválido: ${data.role}`);
+    }
+
+   
     const existingUser = await prisma.user.findUnique({
       where: { email: data.email },
     });
@@ -28,7 +42,7 @@ class AuthService {
         name: data.name,
         email: data.email,
         password: hashedPassword,
-        role: data.role,
+        role: prismaRole,
       },
     });
 
